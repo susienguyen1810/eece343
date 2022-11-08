@@ -1,17 +1,19 @@
 module activity9 #(
 			 parameter DATA_WIDTH = 32)
 			 (output logic [DATA_WIDTH-1:0] instructionoutput, 
-			 input logic [DATA_WIDTH-1:0] PCPLUS4,BranchAdd,
+			 input logic [DATA_WIDTH-1:0] BranchAdd,
+			 output logic [DATA_WIDTH-1:0] PCPLUS4,
+			 input clk, reset,
 			 input logic PCSrc);
 			 
 			 
-			 logic clk,wPCSrc;
-			 logic [DATA_WIDTH-1:0] wPC,wA,wBranchAdd;
+			 
+			 logic [DATA_WIDTH-1:0] wPC,wA;
 			 
 			 //implement modules
-			 ff    pc(.clk(clk),.PC(wPC), .A(wA));
+			 ff    pc(.clk(clk),.PC(wPC), .A(wA), .reset(reset));
 			 adder addy(.A(wA), .PCPlus4(PCPLUS4));
-	       PCSrc plexi(.PCPlus4(PCPLUS4), .BranchAdd(wBranchAdd), .PCSrc(wPCSrc), .PC(wPC));
+	       PCSrc plexi(.PCPlus4(PCPLUS4), .BranchAdd(BranchAdd), .PCSrc(PCSrc), .PC(wPC));
 			 Instruction ROM(.RD(instructionoutput),.A(wA));
 
 endmodule 
@@ -34,7 +36,7 @@ module PCSrc (input logic [31:0]PCPlus4,
 endmodule
 
 //Flip flop
-module ff   (input logic clk, 
+module ff   (input logic clk, reset,
 				 input logic [31:0] PC,
 				 output logic[31:0] A);
 				 
@@ -53,11 +55,10 @@ module adder (input logic [31:0] A,
 endmodule
 
 //Instruction Memory
-module Instruction (input logic [31:0] A,PCPlus4,
-						  input logic clk,
+module Instruction (input logic [31:0] A,
 						  output logic [31:0] RD);
 						  
-		reg[31:0] ROM[0:15];
+		logic [31:0] ROM[0:15];
 
 initial begin
 ROM[0]  = 32'b00000000000000000000000000000000;
