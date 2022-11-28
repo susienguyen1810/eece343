@@ -1,0 +1,54 @@
+module activity10_tb();
+logic clk, reset;
+logic [10:0] Instr;
+logic [1:0] RegSrc, RegWrite, ImmScr, ALUScr;
+logic [31:0] SrcA;
+logic [31:0] SrcB;
+logic [31:0] WriteData;
+logic [31:0] Result;
+logic [31:0] RD2;
+logic [31:0] PCPlus4;
+
+	// Device under test
+	activity10 dut(
+		.clk(clk),
+		//.PCSrc(PCSrc),
+		.reset(reset),
+		.Instr(Instr),
+		.Result(Result),
+		.SrcA(SrcA),
+		.SrcB(SrcB),
+		.RegSrc(RegSrc),
+		.RegWrite(RegWrite),
+		.ALUScr(ALUScr),
+		.ImmScr(ImmScr),
+		.WriteData(WriteData),
+		.PCPlus4(PCPlus4),
+		.RD2(RD2)
+	);
+	
+always #5 clk=~clk;
+  initial 
+    begin 
+  #5 RegSrc = 0;
+  #5 RegWrite = 1;
+  #5 ALUScr = 0;
+  #5 ImmScr = 2'b00;
+  
+    end
+
+
+initial begin
+  #5 reset=0;
+  #5 RegSrc = 0;
+  #5 RegWrite = 1;
+  #5 ALUScr = 1;
+  #5 ImmScr = 2'b00;
+
+
+#100 $stop;
+
+
+end 
+
+endmodule 
