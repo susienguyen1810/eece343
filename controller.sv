@@ -1,18 +1,19 @@
-module controller(input logic [3:0] Cond,
-				      input logic [1:0] Op,
+module controller(input logic [11:8] Cond,
+				      input logic [7:6] Op,
 					   input logic [5:0] Funct,
 						input logic [3:0] ALUFlagOut,
 						output logic PCSrc, 
 									    MemtoReg,
-									    we,
+									    WE,
 									    ALUSrc,
-									    we3,
+									    RegWrite,
+							
 						output logic [1:0] RegSrc,
 											    ImmSrc,
-						output logic [2:0] ALUControl
+						output logic [3:0] ALUControl 
 										 );
-
-logic [11:0] controlsignals;
+										 
+		logic [11:0] controlsignals;
 		
 
 always_comb
@@ -23,8 +24,6 @@ begin
 	
 	2'b00: //Data
 	case(Funct[4:1])
-	
-	
 		
 		4'b0100: //add
 		case(Funct[5])
@@ -66,7 +65,7 @@ begin
 			controlsignals=12'bxxxxxxxxxxxx;
 			endcase
 			
-		4'b1111: //MVN
+		4'b1111: //MVN 
 		case(Funct[5])
 			1'b1:
 			controlsignals=12'b0001101001x0;
@@ -110,6 +109,6 @@ begin
 	endcase
 end
 
-assign {PCSrc, MemtoReg, we, ALUControl, ALUSrc, ImmSrc, RegWrite, RegSrc} = controlsignals;
+assign {PCSrc, MemtoReg, WE, ALUControl, ALUSrc, ImmSrc, RegWrite, RegSrc} = controlsignals;
 	
 endmodule 

@@ -8,7 +8,7 @@ module topmodule(input logic clk, reset, MemWrite, MemtoReg,
 					  );
 
 logic [31:0] Result2RF;
-logic [31:0] PC, Instr,SrcA, SrcB, WriteData, ALUResult, rd ;
+logic [31:0] PC, Instr,SrcA, SrcB, WriteData, ALUResult, rd,PCPLUS4 ;
 logic [3:0] ALUFlags;
 
 assign dataout=ALUResult;
@@ -19,7 +19,8 @@ activity9 ifstage (
 		.PCSrc (PCSrc),
 		.reset(reset),
 		.instructionoutput(Instr),
-		.BranchAdd(Result2RF)
+		.BranchAdd(Result2RF),
+		.PCPLUS4(PCPLUS4)
 		);
 
 activity10 idstage (
@@ -34,7 +35,8 @@ activity10 idstage (
 		.ALUScr(ALUScr),
 		.ImmScr(ImmScr),
 		.WriteData(WriteData),
-		.ToControler(ToControler)
+		.ToControler(ToControler),
+		.PCPLUS4(PCPLUS4)
 	   );
 		
 ALU myALU(.ALUControl(ALUControl),

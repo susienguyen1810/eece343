@@ -1,9 +1,9 @@
-module flipflopalu #(parameter WIDTH = 8)
+module flipflopalu 
               (input  logic    clk, reset,
-               input  logic [3:0] d, 
-               output logic [3:0] q);
+               input  logic [3:0] e, 
+               output logic [3:0] f);
 
   always_ff @(posedge clk, posedge reset)
-    if (reset) q <= 0;
-    else       q <= d;
+    if (reset) f <= 0;
+    else       f <= e;
 endmodule
